@@ -32,7 +32,7 @@ public class HelloWorld : MonoBehaviour
 
     void Start()
     {
-        bolenleriBul(6, 78);
+        bolenleriBul(23, 68);
     }
 
 }
