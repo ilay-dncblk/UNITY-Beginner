@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class SolarSystem : MonoBehaviour
 {
+    public float sunSpeed = 2f;
     [System.Serializable]
     public class CelestialBodyData
     {
@@ -19,6 +20,11 @@ public class SolarSystem : MonoBehaviour
         public Vector3 orbitAxis;
         [HideInInspector]
         public TrailRenderer trailRenderer;
+        [HideInInspector]
+        public float timeSinceTrailReset = 0f;
+        public float trailDuration = 2f;
+        public Color trailStartColor = Color.white;
+        public Color trailEndColor = new Color(1f, 1f, 1f, 0f);
     }
 
     public CelestialBodyData[] celestialBodies;
@@ -30,13 +36,17 @@ public class SolarSystem : MonoBehaviour
             bodyData.orbitAxis = (bodyData.bodyTransform.position - bodyData.orbitCenter.position).normalized;
             bodyData.trailRenderer = bodyData.bodyTransform.GetComponent<TrailRenderer>();
             if (bodyData.trailRenderer != null)
+            {
                 bodyData.trailRenderer.Clear();
+                bodyData.trailRenderer.startColor = bodyData.trailStartColor;
+                bodyData.trailRenderer.endColor = bodyData.trailEndColor;
+            }
         }
     }
 
     private void Update()
     {
-         transform.Translate(Vector3.up*Time.deltaTime, Space.World);
+         transform.Translate(Vector3.up*Time.deltaTime*sunSpeed, Space.World);
          foreach (var bodyData in celestialBodies)
         {
             float rotationAngle = bodyData.orbitSpeed * Time.deltaTime * (bodyData.isClockwise ? 1 : -1);
@@ -47,7 +57,11 @@ public class SolarSystem : MonoBehaviour
 
             // Update the trail renderer if available
             if (bodyData.trailRenderer != null)
+            {
                 bodyData.trailRenderer.AddPosition(bodyData.bodyTransform.position);
+                
+            }
+            
         }
     }
 }
