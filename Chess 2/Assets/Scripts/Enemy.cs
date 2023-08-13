@@ -36,7 +36,7 @@ public class Enemy : MonoBehaviour
         enemy = Instantiate(enemyPrefab, new Vector3(x, y, z), Quaternion.identity);
         enemy.transform.parent = transform;
         enemy.tag = "Enemy";
-
+        enemy.transform.rotation = new Quaternion(-90, 0, 0, 90);
         enemy.GetComponent<Renderer>().material.color = Color.red;
 
         enemy.GetComponent<BoxCollider>().isTrigger = true;
